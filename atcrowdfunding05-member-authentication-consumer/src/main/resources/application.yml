@@ -1,0 +1,36 @@
+server:
+  port: 4000
+spring:
+  application:
+    name: atcrowd-member-authentication-consumer
+  redis:
+    host: 192.168.132.10
+  # springsession 配置
+  session:
+    store-type: redis
+
+eureka:
+  client:
+    #是否将自己注册到Eureka中默认是true
+    register-with-eureka: true
+    #是否从何Eureka抓取已有的注册信息，默认是true。单机版无所谓，集群版必须设置为true才能配合ribbon使用负载均衡
+    fetch-registry: true
+    service-url:
+      #注册中心的地址
+      defaultZone: http://localhost:1000/eureka
+  instance:
+    instance-id: authentication-consumer4000
+    prefer-ip-address: true #显示ip地址
+short:
+  message:
+    host: https://zwp.market.alicloudapi.com
+    path: /sms/sendv2
+    method: get
+    appCode: d12f4b8452d2480095e4eb27312717ff
+
+# 设置feign客户端超时时间(OpenFeign默认支持ribbon)
+ribbon:
+  # 指的是建立连接所用的时间,适用于网络状态正常的情况下,两端连接所用的时间
+  ReadTimeout: 10000
+  # 指的是建立连接后从服务器读取到可用资源所用的时间
+  ConnectTimeout: 10000

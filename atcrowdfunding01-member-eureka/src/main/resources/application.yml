@@ -1,0 +1,16 @@
+server:
+  port: 1000
+spring:
+  application:
+    name: atcrowd-member-eureka
+eureka:
+  instance:
+    hostname: localhost #eureka服务端的名字  随便写
+  client:
+    #是否将自己注册到Eureka中默认是true
+    register-with-eureka: false
+    #false表示自己就是注册中心，负责提供服务
+    fetch-registry: false
+    service-url:
+      #单机版自己注册自己
+      defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/

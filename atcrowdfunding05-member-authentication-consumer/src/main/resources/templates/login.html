@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+    <head th:include="/common/member-head :: head">
+	<style>
+
+	</style>
+  </head>
+  <body>
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <div><a class="navbar-brand" th:href="@{/}" style="font-size:32px;">尚筹网-创意产品众筹平台</a></div>
+        </div>
+      </div>
+    </nav>
+
+    <div class="container">
+
+      <form class="form-signin" role="form" th:action="@{/member/auth/login/check}">
+        <h2 class="form-signin-heading"><i class="glyphicon glyphicon-log-in"></i>用户登录</h2>
+          <div>
+
+              <p  th:text="${#request.getAttribute('loginMassage')}" id="check_login_mes"></p>
+          </div>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" id="inputSuccess4" name="loginacct" placeholder="请输入登录账号" autofocus>
+			<span class="glyphicon glyphicon-user form-control-feedback"></span>
+		  </div>
+		  <div class="form-group has-success has-feedback">
+			<input type="text" class="form-control" id="inputSuccess4" name="userpswd" placeholder="请输入登录密码" style="margin-top:10px;">
+			<span class="glyphicon glyphicon-lock form-control-feedback"></span>
+		  </div>
+          <div class="checkbox" style="text-align:right;"><a th:href="@{/member/auth/to/reg/page}">我要注册</a></div>
+        <button type="button" id="submit_but" class="btn btn-lg btn-success btn-block" > 登录</button>
+      </form>
+    </div>
+    <script type="text/javascript" th:src="@{/jquery/jquery-2.1.1.min.js}"></script>
+    <script type="text/javascript" th:src="@{/bootstrap/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/layer/layer.js}"></script>
+    <script type="text/javascript" >
+        $(function () {
+            $("#submit_but").click(function () {
+                var loginacct = $("[name=loginacct]").val();
+                if (loginacct == "") {
+                    layer.msg("请输入登录账号！");
+                    return false;
+                }
+                var userpswd = $("[name=userpswd]").val();
+                if (userpswd == "") {
+                    layer.msg("请输入密码！");
+                    return false;
+                }
+
+                var result = ajax_login_check(loginacct,userpswd);
+                // console.log(result);
+
+                if (result.status != 200) {
+                    layer.msg("服务器处理错误！" + "响应码：" + result.status + ",信息：" + result.statusText );
+                    return  false;
+                }
+
+                var resultJson = result.responseJSON;
+                if (resultJson.code == "FAILURE") {
+                    $("#check_login_mes").text(resultJson.mssage);
+                    return false;
+                }
+
+                window.location = "member/auth/to/home/page";
+            });
+        });
+        function ajax_login_check(loginacct,userpswd) {
+            var result =  $.ajax({
+                    "url" : "member/auth/login/check",
+                    "type" : "post",
+                    "data" : {
+                        "loginacct" : loginacct,
+                        "userpswd" : userpswd
+                    },
+                    "dataType" : "json",
+                    "async" : false
+                });
+            return result;
+        }
+    </script>
+  </body>
+</html>

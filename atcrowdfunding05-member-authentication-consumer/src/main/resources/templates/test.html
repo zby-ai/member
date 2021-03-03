@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <head th:include="/common/member-head :: head">
+
+        <script type="text/javascript" th:src="@{/jquery/jquery-2.1.1.min.js}"></script>
+        <script type="text/javascript">
+            $(function () {
+                layer.msg(111111);
+            })
+        </script>
+</head>
+<body>
+    <h1>hello!!!!</h1>
+</body>
+</html>
